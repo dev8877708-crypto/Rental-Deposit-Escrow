@@ -52,7 +52,12 @@ npm test
 ```
 
 ## Initial Idea
-[LEAVE PLACEHOLDER — I will fill this in manually]
+The initial concept for this project stems from solving real-world friction between property renters and landlords during lease terminations. Security deposits often suffer from delayed returns, arbitrary damage deductions, and lack of transparency. By building a Zero-Knowledge Rental Deposit Escrow on the Midnight Network using Compact, both parties benefit from cryptographic guarantees: tenants prove secret PIN authorization for deposit releases without exposing raw keys, while landlords receive transparent state updates on-chain without compromising private tenant data.
 
 ## Screenshots
-[LEAVE PLACEHOLDER — I will add compile output and contract address screenshots]
+
+### 1. Contract Compilation & Unit Tests
+![Compile Output & Unit Tests](./compile_screenshot.jpg)
+
+### 2. Contract Deployment Output (Preview Network)
+![Contract Address Deployment](./deploy_screenshot.jpg)
