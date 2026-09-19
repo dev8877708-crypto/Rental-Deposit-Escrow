@@ -1,0 +1,14 @@
+{
+  "name": "rental-deposit-escrow",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Zero-Knowledge Rental Deposit Escrow Smart Contract on Midnight Network",
+  "scripts": {
+    "compile": "compact compile contracts/counter.compact managed/",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.0"
+  }
+}
