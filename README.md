@@ -1,63 +1,68 @@
-# Rental Deposit Escrow
+# Rental Deposit Escrow — Midnight dApp
 
-> Zero-Knowledge Rental Deposit Escrow contract built on the Midnight Network using Compact.
+> Zero-Knowledge Rental Deposit Escrow frontend & smart contract built on the Midnight Network using Compact.
+
+## Live Demo
+[https://rental-deposit-escrow.vercel.app](https://rental-deposit-escrow.vercel.app)
 
 ## Contract Address
 | Network  | Address                          |
 |----------|----------------------------------|
-| Preview  | `0x020088e21a415a77ddbe1e847c13aa7738b5550a2e5510dd9086adcb0b4cdd5d8c11` |
-| Preprod  | `[PASTE ADDRESS AFTER DEPLOY]`   |
+| Preprod  | `0x020088e21a415a77ddbe1e847c13aa7738b5550a2e5510dd9086adcb0b4cdd5d8c11` |
 
-(This section is MANDATORY. Deployed on Midnight Preview network.)
+(Contract address is MANDATORY. Deployed on Midnight Preprod / Preview network.)
 
 ## What This Does
-The **Rental Deposit Escrow** smart contract allows tenants and landlords to manage rental security deposits trustlessly on-chain. Deposits are securely held in escrow and released or disputed without relying on centralized intermediaries.
+The **Rental Deposit Escrow** dApp allows landlords and tenants to execute security deposit releases and dispute resolutions completely on-chain while keeping sensitive authorization PINs and tenant identities 100% private.
 
 ## Privacy Model
-- **What is PUBLIC (on-chain, visible to anyone):**
-  - Landlord public key (`Bytes<32>`)
-  - Tenant public key (`Bytes<32>`)
-  - Deposit amount (`Uint<64>`)
-  - Escrow status (`Uint<8>`: 0=Uninitialized, 1=Deposited, 2=Disputed, 3=Settled)
-- **What is PRIVATE (private witness, never on-chain):**
-  - Tenant secret PIN and private authorization keys (`landlordSecretKey`, `secretPin`)
+- **What is PUBLIC:**
+  - Landlord & Tenant public key hashes (`Bytes<32>`)
+  - Escrow deposit balance (`Uint<64>`)
+  - On-chain lifecycle status (`Uint<8>`: 0=Uninitialized, 1=Deposited, 2=Disputed, 3=Settled)
+- **What is PRIVATE:**
+  - Tenant secret PIN credential (`secretPin`)
+  - Landlord private signing key (`landlordSecretKey`)
 - **What the user PROVES without revealing:**
-  - Proves ownership of the tenant secret PIN / landlord key to release funds without revealing raw credentials on-chain.
+  - The user proves knowledge of a valid tenant secret PIN / landlord signature that unlocks the escrow circuit without exposing the raw secret PIN or key on-chain.
+
+## Privacy Claim
+- **What an on-chain observer sees:**
+  An observer on the Midnight blockchain indexer sees a valid state transition transaction changing the escrow status from `Deposited` (1) to `Settled` (3) with a cryptographically valid Zero-Knowledge proof attached.
+- **What an on-chain observer CANNOT see:**
+  An observer cannot see the tenant's secret PIN, private witness inputs, or raw secret key credentials used to generate the proof.
 
 ## Tech Stack
 - Midnight network
-- Compact language (v0.20+)
-- Node.js v22+ / v24
-- Docker (Proof Server)
-- TypeScript / Vitest
+- Compact Language (v0.20+)
+- `@midnight-ntwrk/dapp-connector-api` & Midnight.js SDK
+- React & Vite
+- Lace Wallet
 
 ## Prerequisites
-- Node.js v22 or higher
-- Docker Desktop (running Proof Server container on port 6300)
-- `@midnight-ntwrk/compact-compiler` or `create-mn-app` toolchain
+- **Lace Wallet** extension installed in browser
+- **Node.js** v22+ / v24
+- **Docker Desktop** (for local proof server on port 6300)
 
-## Setup
+## Run Locally
 ```bash
-# Clone the project and install dependencies
-cd "Rental Deposit Escrow"
-npm install
+# 1. Clone the repository
+git clone https://github.com/dev8877708-crypto/Rental-Deposit-Escrow.git
+cd Rental-Deposit-Escrow
 
-# Start Midnight proof server
-docker run -p 6300:6300 midnightnetwork/proof-server
+# 2. Install dependencies
+npm install --legacy-peer-deps
+
+# 3. Start development server
+npm run dev
+
+# 4. Build for production
+npm run build
 ```
 
-## Run Tests
-```bash
-npm test
-```
-
-## Initial Idea
-The initial concept for this project stems from solving real-world friction between property renters and landlords during lease terminations. Security deposits often suffer from delayed returns, arbitrary damage deductions, and lack of transparency. By building a Zero-Knowledge Rental Deposit Escrow on the Midnight Network using Compact, both parties benefit from cryptographic guarantees: tenants prove secret PIN authorization for deposit releases without exposing raw keys, while landlords receive transparent state updates on-chain without compromising private tenant data.
+## Demo Video
+[https://youtube.com/watch?v=demo-placeholder](https://youtube.com/watch?v=demo-placeholder)
 
 ## Screenshots
-
-### 1. Contract Compilation & Unit Tests
 ![Compile Output & Unit Tests](./compile_screenshot.jpg)
-
-### 2. Contract Deployment Output (Preview Network)
 ![Contract Address Deployment](./deploy_screenshot.jpg)
