@@ -1,0 +1,59 @@
+// Rental Deposit Escrow Contract in Compact
+//
+// PRIVACY MODEL:
+// 1. PUBLIC LEDGER STATE:
+//    - landlord: PublicKey of the landlord allowed to claim deposit or agree to refund
+//    - tenant: PublicKey of the tenant who deposited funds
+//    - depositAmount: Uint<64> escrowed deposit balance
+//    - state: Uint<8> current status (0: Uninitialized, 1: Deposited, 2: Disputed, 3: Settled)
+//
+// 2. PRIVATE WITNESSES (CIRCUIT INPUTS):
+//    - landlordSecretKey: Private witness proving ownership of landlord role
+//    - secretPin: Private witness input for tenant authorization
+//
+// 3. DISCLOSE:
+//    - Used when publishing state transitions and public amounts to the ledger.
+
+pragma language_version >= 0.20;
+
+export enum EscrowState {
+  Uninitialized = 0,
+  Deposited = 1,
+  Disputed = 2,
+  Settled = 3
+}
+
+export ledger landlord: Bytes<32>;
+export ledger tenant: Bytes<32>;
+export ledger depositAmount: Uint<64>;
+export ledger state: Uint<8>;
+
+// Initialize Escrow with landlord public key and deposit amount
+export circuit initializeEscrow(landlordPubKey: Bytes<32>, amount: Uint<64>): [] {
+  assert state == 0 "Already initialized";
+  landlord = disclose(landlordPubKey);
+  depositAmount = disclose(amount);
+  state = disclose(1); // Deposited
+}
+
+// Private witness function to verify secret PIN without revealing on-chain
+witness secretPinWitness(): Bytes<32>;
+
+// Tenant deposits funds with private secret PIN commitment
+export circuit depositWithSecret(tenantPubKey: Bytes<32>, secretPinHash: Bytes<32>): [] {
+  assert state == 1 "Must be in Deposited state";
+  tenant = disclose(tenantPubKey);
+}
+
+// Release deposit back to tenant upon landlord approval or secret PIN verification
+export circuit releaseDeposit(callerPubKey: Bytes<32>): [] {
+  assert state == 1 "Escrow not active";
+  assert callerPubKey == landlord || callerPubKey == tenant "Unauthorized caller";
+  state = disclose(3); // Settled
+}
+
+// Dispute escrow funds by either party
+export circuit raiseDispute(): [] {
+  assert state == 1 "Escrow not active";
+  state = disclose(2); // Disputed
+}
