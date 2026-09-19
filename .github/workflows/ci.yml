@@ -1,4 +1,4 @@
-name: CI
+name: CI & Build Checks
 
 on:
   push:
@@ -9,12 +9,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install
-      - run: npm test
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+      - name: Run unit tests
+        run: npm test
+      - name: Test production build
+        run: npx vite build
