@@ -1,4 +1,5 @@
-# Rental Deposit Escrow — Midnight dApp
+# Rental Deposit Escrow
+![CI](https://github.com/dev8877708-crypto/Rental-Deposit-Escrow/actions/workflows/ci.yml/badge.svg)
 
 > Zero-Knowledge Rental Deposit Escrow frontend & smart contract built on the Midnight Network using Compact.
 
@@ -16,14 +17,14 @@
 The **Rental Deposit Escrow** dApp allows landlords and tenants to execute security deposit releases and dispute resolutions completely on-chain while keeping sensitive authorization PINs and tenant identities 100% private.
 
 ## Privacy Model
-- **What is PUBLIC:**
+- **PUBLIC:**
   - Landlord & Tenant public key hashes (`Bytes<32>`)
   - Escrow deposit balance (`Uint<64>`)
   - On-chain lifecycle status (`Uint<8>`: 0=Uninitialized, 1=Deposited, 2=Disputed, 3=Settled)
-- **What is PRIVATE:**
+- **PRIVATE:**
   - Tenant secret PIN credential (`secretPin`)
   - Landlord private signing key (`landlordSecretKey`)
-- **What the user PROVES without revealing:**
+- **PROVED without revealing:**
   - The user proves knowledge of a valid tenant secret PIN / landlord signature that unlocks the escrow circuit without exposing the raw secret PIN or key on-chain.
 
 ## Privacy Claim
@@ -33,18 +34,13 @@ The **Rental Deposit Escrow** dApp allows landlords and tenants to execute secur
   An observer cannot see the tenant's secret PIN, private witness inputs, or raw secret key credentials used to generate the proof.
 
 ## Tech Stack
-- Midnight network
-- Compact Language (v0.20+)
-- `@midnight-ntwrk/dapp-connector-api` & Midnight.js SDK
-- React & Vite
-- Lace Wallet
+Midnight network, Compact, Midnight.js SDK, React/Vite, Lace wallet
 
 ## Prerequisites
-- **Lace Wallet** extension installed in browser
-- **Node.js** v22+ / v24
-- **Docker Desktop** (for local proof server on port 6300)
+- Lace wallet installed in browser
+- Node.js v22+
 
-## Run Locally
+## Setup & Run Locally
 ```bash
 # 1. Clone the repository
 git clone https://github.com/dev8877708-crypto/Rental-Deposit-Escrow.git
@@ -60,8 +56,16 @@ npm run dev
 npm run build
 ```
 
-## Demo Video
-[https://youtube.com/watch?v=demo-placeholder](https://youtube.com/watch?v=demo-placeholder)
+## Run Tests
+```bash
+npm test
+```
+
+## CI/CD
+The GitHub Actions CI/CD pipeline (`.github/workflows/ci.yml`) automatically triggers on every `push` to `main` and all `pull_request` branches. It checks out the codebase, sets up Node.js v22, installs dependencies, verifies Compact smart contract syntax compilation, executes the 3+ Vitest unit test suite, and confirms zero errors in the Vite production build.
+
+## Product Proposal
+See [PROPOSAL.md](./PROPOSAL.md)
 
 ## Screenshots
 ![Compile Output & Unit Tests](./compile_screenshot.jpg)
