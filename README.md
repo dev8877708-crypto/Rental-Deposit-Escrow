@@ -67,6 +67,14 @@ The GitHub Actions CI/CD pipeline (`.github/workflows/ci.yml`) automatically tri
 ## Product Proposal
 See [PROPOSAL.md](./PROPOSAL.md)
 
-## Screenshots
+## Screenshots & Demo Flow
+
+### 1. Full dApp Flow (Wallet Connected & On-Chain Result)
+![Full dApp Flow](./dapp_flow_screenshot.jpg)
+
+### 2. CI Status Badge & Unit Tests (3 Passed)
+![CI Badge & Tests Passing](./ci_tests_screenshot.jpg)
+
+### 3. Contract Compilation & Deployment
 ![Compile Output & Unit Tests](./compile_screenshot.jpg)
 ![Contract Address Deployment](./deploy_screenshot.jpg)
